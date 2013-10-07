@@ -6,15 +6,19 @@ import (
 	"net/http"
 	"io/ioutil"
 	"log"
+	//"fmt"
 	"stocktick/stockquote"
 	"encoding/json"
+	"yql/yqlbuilder"
 )
 
 
-func FetchSymbol(url string) *stockquote.StockQuote {
+func FetchSymbol(symbol string) *stockquote.StockQuote {
 
+	url := yqlbuilder.GetSymbol(symbol);
+	//fmt.Printf("%s", url);
 	resp,err := http.Get(url);
-
+	
 	if err != nil {
 		//failed to fetch stream
 		log.Fatal(err);
@@ -22,13 +26,17 @@ func FetchSymbol(url string) *stockquote.StockQuote {
 
 	defer resp.Body.Close();
 	body, err := ioutil.ReadAll(resp.Body);
+	
+	if err != nil {
+		log.Fatal(err);
+	}
 
 	stock := &stockquote.StockList{};
 
 	error := json.Unmarshal(body, &stock);
 	
 	if error != nil {
-		log.Fatal(err);
+		log.Fatal(error);
 	}
 
 	m := stock.Query.Results.Quote;
