@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"io/ioutil"
 	"log"
-	//"fmt"
 	"stocktick/stockquote"
 	"encoding/json"
 	"yql/yqlbuilder"
@@ -16,7 +15,6 @@ import (
 func FetchSymbol(symbol string) *stockquote.StockQuote {
 
 	url := yqlbuilder.GetSymbol(symbol);
-	//fmt.Printf("%s", url);
 	resp,err := http.Get(url);
 	
 	if err != nil {
