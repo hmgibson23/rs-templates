@@ -47,7 +47,6 @@ func NewStockQuote(m map[string] string) *StockQuote {
 	return sq
 }
 
-
 func PrintStock(s *StockQuote) {
 	fmt.Printf("Symbol: %s\n", s.symbol);
 	fmt.Printf("Ask: %v\n", s.ask);
@@ -57,3 +56,10 @@ func PrintStock(s *StockQuote) {
 	fmt.Printf("EBITDA: %v\n", s.EBITDA);
 	fmt.Printf("P/E Ratio: %v\n", s.PEratio);
 }
+
+func SaveToDB(s *StockQuote) {
+}
+
+func FetchFromDB(symbol string) {
+}
+
