@@ -27,7 +27,7 @@ func FetchSymbol(symbol string) *stockquote.StockQuote {
 	body, err := ioutil.ReadAll(resp.Body);
 	
 	if err != nil {
-//		log.Fatal(err);
+		//panic(err);
 	}
 
 	stock := &stockquote.StockList{};
@@ -35,7 +35,7 @@ func FetchSymbol(symbol string) *stockquote.StockQuote {
 	error := json.Unmarshal(body, &stock);
 	
 	if error != nil {
-//		log.Fatal(error);
+		//panic(error);
 	}
 
 	m := stock.Query.Results.Quote;
@@ -54,6 +54,7 @@ func FetchSymbols(symbols []string) {
 			fmt.Println(elem);
 			q := FetchSymbol(elem)
 			stockquote.PrintStock(q)
+//			stockquote.SaveToDB(q);
 			sem <- true;
 		}(elem)
 	}

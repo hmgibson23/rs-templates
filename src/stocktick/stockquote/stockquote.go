@@ -3,6 +3,7 @@ package stockquote
 import (
 	"fmt"
 	"strconv"
+	//"labix.org/v2/mgo"
 )
 
 
@@ -56,10 +57,25 @@ func PrintStock(s *StockQuote) {
 	fmt.Printf("EBITDA: %v\n", s.EBITDA);
 	fmt.Printf("P/E Ratio: %v\n", s.PEratio);
 }
-
+/*
+//can't use on windows
 func SaveToDB(s *StockQuote) {
-}
+	//connect to the db
+	session, err := mgo.Dial("localhost");
 
+	if err != nil {
+		panic(err);
+	}
+	defer session.Close();
+	
+	c := session.DB("stocktick").C("people")
+	err = c.Insert(s);
+
+	if err != nil {
+		panic(err);
+	}
+}
+*/
 func FetchFromDB(symbol string) {
 }
 
