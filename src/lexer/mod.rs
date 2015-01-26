@@ -4,7 +4,7 @@ use std::char::CharExt;
 mod lexer;
 
 /* The lexer that lexes */
-enum Token {
+pub enum Token {
     Expr(String),
     Missing
 }
@@ -18,10 +18,12 @@ impl Token {
     }
 }
 
-pub fn get_token(input: &str) -> Token {
+pub fn get_token(input: &str) -> Vec<Token> {
 
     let mut last_char = String::new();
-    let mut token = Token::Missing;
+
+    let mut tokens = Vec::new();
+
 
     let mut tokenizing = 0; //state machine for tokenizing
 
@@ -37,8 +39,9 @@ pub fn get_token(input: &str) -> Token {
 
             // check if we're at the end yet
             if complete_token(last_char.clone()) {
-                token = get_expr(last_char.clone());
-                break;
+                tokens.push(get_expr(last_char.clone()));
+                tokenizing = 0;
+                last_char = String::new()
             }
 
             continue;
@@ -54,7 +57,7 @@ pub fn get_token(input: &str) -> Token {
         }
 
         }
-        token
+        tokens
     }
 
     fn complete_token(input: String) -> bool {
