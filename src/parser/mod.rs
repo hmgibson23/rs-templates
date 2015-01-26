@@ -1,10 +1,8 @@
+use std::collections::HashMap;
 mod parser;
 
-use std::collections::HashMap;
 
-/* take the stream of tokens from the lexer and parser them */
-
-
+/* take the stream of tokens from the lexer and parse them */
 
 /* eventually we'll need an AST for this */
 enum Expr {

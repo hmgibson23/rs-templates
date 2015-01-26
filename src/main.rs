@@ -1,4 +1,5 @@
 mod lexer;
+mod parser;
 
 fn main() {
     let tokens = lexer::get_token("<html><p>{{value}}</p><p>{{another value}}</p></html>");
