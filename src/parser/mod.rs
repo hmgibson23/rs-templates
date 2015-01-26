@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use lexer::Token;
+
 mod parser;
 
 
@@ -18,7 +20,7 @@ pub fn map_tokens(tokens: Vec<Token>) -> Vec<Expr> {
     tokens.map_in_place()
 }
 
-fn parse_token(expr: token) -> Expr {
+fn parse_token(expr: Token) -> Expr {
     // remove surrounding {} and whitespace
     // and you've got the value
     let (input, _) = expr;
