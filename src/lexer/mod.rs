@@ -4,6 +4,7 @@ use std::char::CharExt;
 mod lexer;
 
 /* The lexer that lexes */
+#[derive(Clone)]
 pub enum Token {
     Expr(String),
     Missing
