@@ -1,5 +1,8 @@
 [package]
 
-name = "rs-templates"
+name = "templates"
 version = "0.0.1"
 authors = ["Hugo Gibson <gibsonhugo@gmail.com>"]
+
+[dependencies]
+rustc-serialize = "0.3"

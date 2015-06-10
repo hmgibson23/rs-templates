@@ -1,47 +1,33 @@
-use std::collections::HashMap;
 use lexer::Token;
-
-mod parser;
-
+use lexer::tokenize_file;
 
 /* take the stream of tokens from the lexer and parse them */
 
-/* eventually we'll need an AST for this */
-enum Expr {
-    /* for now this only contains simple values but it should be extended for
-     * loops etc.
-     */
-    // string -  complete lexed string -> string - parsed value inside
-    Value(HashMap<String, String>),
-    Empty
+// source is the original value -> retained to do a string replace
+// value is the parsed value
+#[derive(Clone, PartialEq)]
+pub struct Value {
+    pub source: String,
+    pub value: String
 }
 
-
-pub fn map_tokens(tokens: Vec<Token>) -> Vec<Expr> {
-    tokens.map_in_place(|&: x: Token| -> Expr { parse_token(x)})
-}
-
-fn parse_token(expr: Token) -> Expr {
-
-    let val = match expr {
-        Token::Expr(input) => {
-            let f = prepare_expr(input);
-            Expr::Value(f)
+pub fn parse_token(expr: &Token) -> Option<Value> {
+    match expr {
+        &Token::Expr(ref input) => {
+            Some(prepare_expr(input))
         },
-        Token::Missing => Expr::Empty
-    };
-    val
+        &Token::Missing => None
+    }
 }
 
-fn prepare_expr(input: String) -> HashMap<String, String> {
+fn prepare_expr(input: &String) -> Value {
     // remove surrounding {} and whitespace
     // and you've got the value
-    let mut raw = input.clone();
-    raw.remove(0);
-    raw.remove(1);
-    raw.pop();
-    raw.pop();
-    let mut h = HashMap::new();
-    h.insert(raw, input);
-    h
+    let raw = input.clone().replace("{", "").replace("}", "");
+    Value {source: input.clone(), value: raw}
+}
+
+pub fn parse_file(file: &str) -> Vec<Option<Value>> {
+    let tokens = tokenize_file(file);
+    tokens.iter().map(parse_token).collect::<Vec<_>>()
 }

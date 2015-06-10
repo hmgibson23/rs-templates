@@ -1,10 +1,10 @@
-use std::io::{BufferedReader, File};
-use std::char::CharExt;
+use std::char;
+use std::fs::File;
+use std::io::Read;
 
-mod lexer;
 
 /* The lexer that lexes */
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub enum Token {
     Expr(String),
     Missing
@@ -14,12 +14,12 @@ impl Token {
     pub fn stringify(self) -> String {
         match self {
             Token::Expr(val) => val,
-            Missing => format!("No token.")
+            Token::Missing => format!("No token.")
         }
     }
 }
 
-pub fn get_token(input: &str) -> Vec<Token> {
+pub fn get_tokens(input: &str) -> Vec<Token> {
 
     let mut last_char = String::new();
 
@@ -28,9 +28,9 @@ pub fn get_token(input: &str) -> Vec<Token> {
 
     let mut tokenizing = 0; //state machine for tokenizing
 
-    for c in input.as_slice().chars() {
+    for c in input.chars() {
 
-        if CharExt::is_whitespace(c) {
+        if char::is_whitespace(c) && tokenizing != 1 {
             continue;
         }
 
@@ -57,17 +57,25 @@ pub fn get_token(input: &str) -> Vec<Token> {
             continue;
         }
 
-        }
-        tokens
     }
+    tokens
+}
 
-    fn complete_token(input: String) -> bool {
-        match input.find_str("}}") {
-            Some(uint) => true,
-            None => false
-        }
+fn complete_token(input: String) -> bool {
+    match input.find("}}") {
+        Some(_) => true,
+        None => false
     }
+}
 
-    fn get_expr(input: String) -> Token {
-        Token::Expr(input)
-    }
+fn get_expr(input: String) -> Token {
+    Token::Expr(input)
+}
+
+pub fn tokenize_file(file: &str) -> Vec<Token> {
+    let mut file = File::open(file).unwrap();
+    let mut data = String::new();
+
+    file.read_to_string(&mut data).unwrap();
+    get_tokens(&data)
+}
